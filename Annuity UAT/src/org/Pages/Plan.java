@@ -1,4 +1,4 @@
-package org.plan;
+package org.Pages;
 
 import java.util.ResourceBundle;
 
@@ -19,18 +19,12 @@ public class Plan {
 	
 	public void propectues_been_delivered(){
 		
-		driver.findElementByXPath(rb.getString("propectues_been_delivered_yes")).click();
+		driver.findElementByXPath(rb.getString("propectues_been_delivered")).click();
 	}
 	
     public void select_plan(String s){
 		
 		Select select = new Select(driver.findElementByXPath(rb.getString("plan_type_planpage")));
-		select.selectByVisibleText(s);
-	}
-    
-    public void contract_owner(String s){
-		
-		Select select = new Select(driver.findElementByXPath(rb.getString("plan_contract_owner")));
 		select.selectByVisibleText(s);
 	}
 	

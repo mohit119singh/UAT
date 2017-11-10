@@ -44,7 +44,7 @@ public class Carrier_Product {
     
     public void click_next(){
     	
-    	driver.findElementByXPath(rb.getString("next")).click();
+    	driver.findElementByXPath(rb.getString("cp_next")).click();
     }
     
 }

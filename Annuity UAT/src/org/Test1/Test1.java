@@ -16,7 +16,11 @@ import org.OpenBrowser.OpenBrowser;
 import org.OpenBrowser.PTApage;
 import org.OpenBrowser.Partner_page;
 import org.Pages.Carrier_Product;
+import org.Pages.IndividualOwner;
+import org.assertion.Compare;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class Test1 extends OpenBrowser{
 
@@ -24,16 +28,25 @@ public class Test1 extends OpenBrowser{
 	@Test
 	public void test1_execution() throws InterruptedException, IOException{
 		
-		ResourceBundle rb= ResourceBundle.getBundle("Elements");
 		
+		ResourceBundle rb= ResourceBundle.getBundle("Elements");
+		SoftAssert assertion = new SoftAssert();
+		
+		//-------------------Annnuity Login Page-----------------
 		Loginclass login = new Loginclass(driver);
+		
 		login.username("Msingh");
-		login.pwd("Ebix@2002");
+		
+		login.pwd("Ebix@2003");
+		
 		login.loginbutton();
 		
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
+		
+		//--------------------ListUser page-----------------------
 		Partner_page pg = new Partner_page(driver);
 		
 		pg.select_partner("Edward Jones");
@@ -48,11 +61,12 @@ public class Test1 extends OpenBrowser{
 		
 		pg.click_login();
 		
-		//driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		
+		//-----------------------EDJ PTA Page-----------------------------
 		
 		PTApage pta = new PTApage(driver);
 		
@@ -110,9 +124,10 @@ public class Test1 extends OpenBrowser{
 		
 	    pta.click_login();
 	    
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
 	    
 		//------------------Carrier/Product Screen-------------------
 		
@@ -135,9 +150,12 @@ public class Test1 extends OpenBrowser{
 	    
 	    cp.wizard("Edward Jones application wizard");
 	    
+		((JavascriptExecutor) driver).executeScript("scroll(0,1000)");
+	    
 	    cp.click_next();
 	    
 	    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	    
 	    
 	    //------------ Plan screen starts -----------
 	    
@@ -145,15 +163,45 @@ public class Test1 extends OpenBrowser{
 	    
 	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    
-	    ((JavascriptExecutor) driver).executeScript("scroll(0,2000)");
+	    p.select_plan("Non Qualified");
 	    
-	    //p.propectues_been_delivered();
+	    p.contract_owner("Person");
 	    
+	    ((JavascriptExecutor) driver).executeScript("scroll(0,1000)");
+	    
+	    boolean res1 = Compare.prospectusesSelectedNo(driver, true);
+	    assertion.assertTrue(res1, "[Failed test] - Actual Title is not match with expected Title");
+	   
 	    p.click_next();
 	    
+	    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	    
+	    String d =  driver.getTitle();
+	    
+	    boolean res= Compare.compareTitlePlan(driver, d);
+	    
+	    assertion.assertTrue(res, "[Failed test]- Actual Title is not match with expected Title");
+	    
+	    assertion.assertAll();
 	    //----------------Individual Owner-----------------
 	    
+	   /* IndividualOwner io = new  IndividualOwner(driver);
 	    
+	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); 
+	    
+	    io.owner_gender();
+	    
+	    io.mailing_address();
+	    
+	    io.owner_phone_number("1234567891");
+	    
+	    io.owner_email("mohit.singh@ebix.com");
+	    
+	    ((JavascriptExecutor) driver).executeScript("scroll(0,1000)");
+	    
+	    io.annuitant_same_owner();
+	    
+	    io.owner_next();*/
 	    
 	}
 	
